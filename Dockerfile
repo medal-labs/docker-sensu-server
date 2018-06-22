@@ -42,6 +42,12 @@ RUN mkdir -p /etc/sensu/ssl \
 RUN yum install -y uchiwa
 ADD ./files/uchiwa.json /etc/sensu/
 
+# Pagerduty Agent
+ADD ./files/pdagent.repo /etc/yum.repos.d/
+RUN yum install pdagent pdagent-integrations
+RUN wget -O /etc/sensu/conf.d/pagerduty_handler.json \
+  https://raw.githubusercontent.com/PagerDuty/pdagent-integrations/master/conf.d/sensu_pagerduty_handler.json
+
 # supervisord
 RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py \ 
   && pip install supervisor

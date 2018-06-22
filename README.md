@@ -22,7 +22,7 @@ docker build -t yourname/docker-sensu-server .
 ## Run
 
 ```
-docker run -d -p 10022:22 -p 3000:3000 -p 4567:4567 -p 5671:5671 -p 15672:15672 hiroakis/docker-sensu-server
+docker run -d -e PD_INTEGRATION_KEY=<your_key> -p 10022:22 -p 3000:3000 -p 4567:4567 -p 5671:5671 -p 15672:15672 hiroakis/docker-sensu-server
 ```
 
 ## How to access via browser and sensu-client
