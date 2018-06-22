@@ -4,7 +4,8 @@ MAINTAINER Hiroaki Sano <hiroaki.sano.9stories@gmail.com>
 
 # Basic packages
 RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
-  && yum -y install passwd sudo git wget openssl openssh openssh-server openssh-clients jq
+  && yum -y update \
+  && yum -y install passwd sudo git wget openssl openssh openssh-server openssh-clients jq python-pip
 
 # Create user
 RUN useradd hiroakis \
@@ -44,13 +45,12 @@ ADD ./files/uchiwa.json /etc/sensu/
 
 # Pagerduty Agent
 ADD ./files/pdagent.repo /etc/yum.repos.d/
-RUN yum install pdagent pdagent-integrations
+RUN yum install -y pdagent pdagent-integrations
 RUN wget -O /etc/sensu/conf.d/pagerduty_handler.json \
   https://raw.githubusercontent.com/PagerDuty/pdagent-integrations/master/conf.d/sensu_pagerduty_handler.json
 
 # supervisord
-RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py \ 
-  && pip install supervisor
+RUN pip install supervisor
 
 ADD files/supervisord.conf /etc/supervisord.conf
 
